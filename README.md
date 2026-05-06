@@ -1,4 +1,4 @@
-# 🛡️ Shadow Guardian
+#  Shadow Guardian
 
 **Production-grade, event-driven desktop monitoring system for Windows.**
 
