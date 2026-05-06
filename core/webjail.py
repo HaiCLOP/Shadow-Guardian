@@ -92,6 +92,11 @@ class WebJail:
     def _backup_hosts(self) -> bool:
         """Create backup of hosts file if none exists."""
         try:
+            if not HOSTS_PATH.exists():
+                # On very rare Windows configs, hosts file might not exist yet
+                HOSTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+                HOSTS_PATH.write_text("# Windows Hosts File\n", encoding="utf-8")
+                
             if not BACKUP_PATH.exists():
                 shutil.copy2(str(HOSTS_PATH), str(BACKUP_PATH))
                 logger.info("Hosts file backed up")
