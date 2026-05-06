@@ -1,0 +1,22 @@
+# Shadow Guardian — Runtime Dependencies
+# Pinned for production stability
+
+# Core
+psutil==5.9.8
+flask==3.1.0
+waitress==3.0.2
+pywin32==306
+
+# System tray icon
+pystray==0.19.5
+Pillow==10.4.0
+
+# Encryption (for cloud sync)
+cryptography==43.0.3
+
+# HTTP client (for cloud sync)
+requests==2.32.3
+
+# Packet capture (production-grade network monitoring)
+# Requires Npcap to be installed: https://npcap.com/
+scapy==2.6.1

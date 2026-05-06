@@ -1,0 +1,54 @@
+{
+    "dynamic_port": true,
+    "api_port": 0,
+    "feature_flags": {
+        "webjail_enabled": true,
+        "cloud_sync_enabled": false,
+        "network_monitoring": true,
+        "alert_engine": true,
+        "browser_history": true,
+        "usb_monitoring": true,
+        "clipboard_monitoring": true,
+        "file_monitoring": true,
+        "threat_detection": true,
+        "screen_capture": true
+    },
+    "sync_interval": 300,
+    "supabase_url": "",
+    "supabase_key": "",
+    "encryption_passphrase": "",
+    "log_level": "production",
+    "db_path": "shadowguardian.db",
+    "db_retention_days": 30,
+    "batch_write_interval": 3,
+    "max_query_limit": 500,
+    "auth_token_ttl_seconds": 43200,
+    "max_restart_attempts": 10,
+    "webjail_domains": [
+        "bet365.com", "pokerstars.com", "888casino.com", "williamhill.com",
+        "bwin.com", "betfair.com", "draftkings.com", "fanduel.com",
+        "malware-domain.com", "phishing-site.net", "fakeupdates.net",
+        "free-prizes-now.com", "your-pc-is-infected.com",
+        "urgent-security-alert.com", "virus-scan-online.com",
+        "hide.me", "kproxy.com", "proxysite.com", "croxyproxy.com",
+        "hidester.com"
+    ],
+    "dashboard_auto_open": false,
+    "adaptive_polling": {
+        "active_interval": 5,
+        "idle_interval": 30,
+        "idle_threshold": 120
+    },
+    "alert_rules": {
+        "unknown_process_whitelist": [],
+        "rapid_spawn_threshold": 10,
+        "rapid_spawn_window": 60,
+        "high_connection_threshold": 50,
+        "late_night_start": 23,
+        "late_night_end": 5
+    },
+    "stealth": {
+        "process_name": "WinServiceHelper.exe",
+        "process_description": "Windows Service Helper"
+    }
+}
