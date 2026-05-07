@@ -376,6 +376,31 @@ body::before {
     color: var(--cyan);
 }
 
+/* ─── Brandworm ──────────────────────────────────────────── */
+.sidebar-brandworm {
+    padding: 16px 18px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.01);
+}
+.brandworm-text {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.brandworm-logo {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+}
+
+
 /* ─── Status Badges ──────────────────────────────────────── */
 .status-badge {
     display: inline-flex; align-items: center; gap: 5px;
