@@ -1,0 +1,12 @@
+[package]
+name = "webjail_ext"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "webjail_ext"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module"] }
+tempfile = "3.8"

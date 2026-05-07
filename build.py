@@ -41,6 +41,7 @@ HIDDEN_IMPORTS = [
     "core.ipc",
     "core.event_queue",
     "core.webjail",
+    "webjail_ext",
     "db",
     "db.database",
     "sync",

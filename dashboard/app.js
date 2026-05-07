@@ -639,15 +639,40 @@
         return `${h}h ${m}m`;
     }
 
-    // ─── Sidebar Navigation ─────────────────────────────────────
-    document.querySelectorAll('.nav-item').forEach(item => {
+    // ─── Sidebar Navigation & Scroll Spy ────────────────────────
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
             const target = document.querySelector(item.getAttribute('href'));
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
+    });
+
+    // Scroll Spy to update active state on scroll
+    const observerOptions = {
+        root: null,
+        rootMargin: '-10% 0px -80% 0px', // Triggers when section hits top of viewport
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navItems.forEach(n => n.classList.remove('active'));
+                const activeNav = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                }
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('section.card').forEach(section => {
+        observer.observe(section);
     });
 
     // ─── Initialize ─────────────────────────────────────────────

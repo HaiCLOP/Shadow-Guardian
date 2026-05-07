@@ -17,6 +17,11 @@ from typing import Optional
 
 from utils.logger import get_logger
 
+try:
+    import webjail_ext
+except ImportError:
+    webjail_ext = None
+
 logger = get_logger("core.webjail")
 
 HOSTS_PATH = Path(r"C:\Windows\System32\drivers\etc\hosts")
@@ -115,6 +120,9 @@ class WebJail:
 
     def _strip_managed_section(self, content: str) -> str:
         """Remove any existing ShadowGuardian-managed section."""
+        if webjail_ext:
+            return webjail_ext.strip_managed_section(content)
+        
         lines = content.splitlines(keepends=True)
         result = []
         in_managed = False
@@ -133,12 +141,30 @@ class WebJail:
         """Build the managed hosts entries block."""
         if not domains:
             return ""
+            
+        if webjail_ext:
+            return webjail_ext.build_managed_section(list(domains))
+            
+        # Block DNS over HTTPS (DoH) providers to prevent WebJail bypass
+        doh_providers = {
+            "cloudflare-dns.com",
+            "mozilla.cloudflare-dns.com",
+            "dns.google",
+            "dns.quad9.net",
+            "doh.opendns.com",
+            "dns.adguard.com",
+            "dns.nextdns.io"
+        }
+        all_domains = domains.union(doh_providers)
+
         lines = [MARKER_START + "\n"]
-        for domain in sorted(domains):
+        for domain in sorted(all_domains):
             lines.append(f"0.0.0.0 {domain}\n")
+            lines.append(f":: {domain}\n")
             # Also block www subdomain
             if not domain.startswith("www."):
                 lines.append(f"0.0.0.0 www.{domain}\n")
+                lines.append(f":: www.{domain}\n")
         lines.append(MARKER_END + "\n")
         return "".join(lines)
 
@@ -159,11 +185,14 @@ class WebJail:
         return normalized
 
     def _write_hosts(self, content: str) -> bool:
-        """Write content to hosts file atomically.
+        """Write content to hosts file atomically."""
+        if webjail_ext:
+            try:
+                return webjail_ext.write_hosts(content, str(HOSTS_PATH))
+            except Exception as e:
+                logger.error(f"Rust write_hosts failed: {e}")
+                # Fall back to python impl if rust panics
         
-        Writes to a temp file first, then replaces the original.
-        Falls back to direct write if atomic replace fails.
-        """
         try:
             hosts_dir = HOSTS_PATH.parent
             # Write to temp file in the same directory (required for os.replace)
@@ -198,9 +227,19 @@ class WebJail:
 
     def _flush_dns(self) -> None:
         """Flush the Windows DNS resolver cache so changes take effect immediately."""
+        if webjail_ext:
+            try:
+                webjail_ext.flush_dns()
+                logger.debug("DNS cache flushed (Rust)")
+                return
+            except Exception as e:
+                logger.warning(f"Rust DNS flush failed: {e}")
+
         try:
+            # Prefer absolute path for ipconfig to avoid PATH hijack or not-found errors
+            ipconfig_path = shutil.which("ipconfig") or r"C:\Windows\System32\ipconfig.exe"
             subprocess.run(
-                ["ipconfig", "/flushdns"],
+                [ipconfig_path, "/flushdns"],
                 capture_output=True,
                 timeout=10,
                 creationflags=0x08000000,  # CREATE_NO_WINDOW

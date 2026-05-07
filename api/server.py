@@ -1,10 +1,3 @@
-"""
-Shadow Guardian — Flask API Server
-
-Localhost-only API server with dynamic port, auth gating,
-first-run setup wizard, and IPC-based data access.
-"""
-
 import os
 import sys
 import json
