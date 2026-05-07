@@ -124,6 +124,9 @@ class ShadowGuardianAgent:
             self._webjail = WebJail(cleanup_on_init=False)
             if self._webjail.is_admin:
                 self._restore_webjail_state()
+                # Start tamper watcher if WebJail is active
+                if self._webjail.is_enabled:
+                    self._webjail.start_tamper_watch()
 
             # Start core sensors
             self._window_tracker = WindowTracker(self._event_queue)
@@ -221,9 +224,18 @@ class ShadowGuardianAgent:
         # Flush remaining events
         self._flush_events_to_db()
 
-        # Stop WebJail (rollback if needed)
+        # WebJail: Keep hosts entries if persisted as enabled (survive reboot).
+        # Only clean up if the user explicitly disabled WebJail.
         if self._webjail and self._webjail.is_enabled:
-            self._webjail.disable()
+            try:
+                persisted = self._db.get_setting("webjail_enabled", "0")
+                if persisted != "1":
+                    # Not persisted — clean up on exit
+                    self._webjail.disable()
+                else:
+                    logger.info("WebJail staying active (persisted) — hosts entries kept")
+            except Exception:
+                pass  # DB might be closed; keep entries to be safe
 
         # Close DB
         self._db.close()
@@ -579,6 +591,12 @@ class ShadowGuardianAgent:
                     self._db.set_setting("webjail_domains", json.dumps(domains))
             except Exception as e:
                 logger.warning(f"Failed to persist WebJail state: {e}")
+
+            # Start/stop tamper protection
+            if enabled:
+                self._webjail.start_tamper_watch()
+            else:
+                self._webjail.stop_tamper_watch()
 
         return {
             "status": "ok" if success else "error",

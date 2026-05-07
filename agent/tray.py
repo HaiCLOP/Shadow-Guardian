@@ -124,6 +124,14 @@ class TrayApplication:
 
         try:
             if not self._api_process or self._api_process.poll() is not None:
+                # Delete stale port file so we don't read an old port
+                from utils.paths import get_app_data_dir
+                stale_port = get_app_data_dir() / "api_port.txt"
+                try:
+                    stale_port.unlink(missing_ok=True)
+                except Exception:
+                    pass
+
                 self._api_process = subprocess.Popen(
                     api_cmd,
                     cwd=cwd,
@@ -146,26 +154,48 @@ class TrayApplication:
             self._health_thread.start()
 
     def _wait_for_api_port(self) -> None:
-        """Wait for the API server to write its port file."""
+        """Wait for the API server to write its port file, then health-check."""
+        import urllib.request
         from utils.paths import get_app_data_dir
         port_file = get_app_data_dir() / "api_port.txt"
 
-        for _ in range(30):  # Wait up to 15 seconds
+        for _ in range(30):  # Wait up to 15 seconds for port file
             if port_file.exists():
                 try:
-                    self._api_port = int(port_file.read_text().strip())
-                    logger.info(f"API server on port {self._api_port}")
-
-                    # Check if first-run — auto-open browser
-                    from db.database import get_database
-                    db = get_database()
-                    pw = db.get_setting("password_hash")
-                    if not pw:
-                        self._open_dashboard()
-                    return
+                    port = int(port_file.read_text().strip())
+                    if port > 0:
+                        self._api_port = port
+                        break
                 except Exception:
                     pass
             time.sleep(0.5)
+
+        if not self._api_port:
+            logger.error("API port file never appeared")
+            return
+
+        # Health-check: wait until the server actually responds
+        for _ in range(20):  # Up to 10 more seconds
+            try:
+                url = f"http://127.0.0.1:{self._api_port}/api/health"
+                req = urllib.request.urlopen(url, timeout=2)
+                if req.status == 200:
+                    logger.info(f"API server confirmed on port {self._api_port}")
+                    # Auto-open browser on first run
+                    try:
+                        from db.database import get_database
+                        db = get_database()
+                        pw = db.get_setting("password_hash")
+                        if not pw:
+                            self._open_dashboard()
+                    except Exception:
+                        pass
+                    return
+            except Exception:
+                pass
+            time.sleep(0.5)
+
+        logger.warning(f"API port {self._api_port} found but health-check failed")
 
     def _health_monitor(self) -> None:
         """Monitor child processes and restart on crash."""

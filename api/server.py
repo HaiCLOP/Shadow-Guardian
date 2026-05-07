@@ -14,7 +14,12 @@ from typing import Optional
 from collections import defaultdict
 
 # Add project root to path
-PROJECT_ROOT = Path(__file__).parent.parent
+if getattr(sys, 'frozen', False):
+    # PyInstaller frozen: __file__ resolves inside _internal/, but the
+    # dashboard and config sit next to the exe.
+    PROJECT_ROOT = Path(sys.executable).parent
+else:
+    PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from flask import Flask, request, jsonify, send_from_directory, session

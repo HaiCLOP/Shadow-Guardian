@@ -186,9 +186,15 @@ class WebJail:
 
     def _write_hosts(self, content: str) -> bool:
         """Write content to hosts file atomically."""
+        # Remove read-only protection before writing
+        self._unprotect_hosts()
+        
         if webjail_ext:
             try:
-                return webjail_ext.write_hosts(content, str(HOSTS_PATH))
+                result = webjail_ext.write_hosts(content, str(HOSTS_PATH))
+                if result:
+                    self._protect_hosts()
+                return result
             except Exception as e:
                 logger.error(f"Rust write_hosts failed: {e}")
                 # Fall back to python impl if rust panics
@@ -217,6 +223,8 @@ class WebJail:
                 logger.error("Hosts file integrity check failed after write")
                 return False
 
+            # Protect hosts file from casual tampering
+            self._protect_hosts()
             return True
         except PermissionError:
             logger.error("Permission denied writing hosts file — run as admin")
@@ -247,6 +255,69 @@ class WebJail:
             logger.debug("DNS cache flushed")
         except Exception as e:
             logger.warning(f"DNS flush failed: {e}")
+
+    def _protect_hosts(self) -> None:
+        """Set hosts file to read-only to prevent casual tampering."""
+        try:
+            attrib = shutil.which("attrib") or r"C:\Windows\System32\attrib.exe"
+            subprocess.run(
+                [attrib, "+R", str(HOSTS_PATH)],
+                capture_output=True,
+                creationflags=0x08000000,
+            )
+            logger.debug("Hosts file protected (read-only)")
+        except Exception as e:
+            logger.warning(f"Failed to protect hosts file: {e}")
+
+    def _unprotect_hosts(self) -> None:
+        """Remove read-only flag from hosts file before writing."""
+        try:
+            attrib = shutil.which("attrib") or r"C:\Windows\System32\attrib.exe"
+            subprocess.run(
+                [attrib, "-R", str(HOSTS_PATH)],
+                capture_output=True,
+                creationflags=0x08000000,
+            )
+        except Exception:
+            pass
+
+    def start_tamper_watch(self) -> None:
+        """Start a background thread that monitors the hosts file for tampering."""
+        if hasattr(self, '_tamper_thread') and self._tamper_thread and self._tamper_thread.is_alive():
+            return
+        self._tamper_stop = threading.Event()
+        self._tamper_thread = threading.Thread(
+            target=self._tamper_watch_loop, name="WebJail-TamperWatch", daemon=True,
+        )
+        self._tamper_thread.start()
+        logger.info("WebJail tamper watch started")
+
+    def stop_tamper_watch(self) -> None:
+        """Stop the tamper watch thread."""
+        if hasattr(self, '_tamper_stop'):
+            self._tamper_stop.set()
+
+    def _tamper_watch_loop(self) -> None:
+        """Periodically check if someone removed WebJail entries and re-apply them."""
+        while not self._tamper_stop.is_set():
+            self._tamper_stop.wait(timeout=15)  # Check every 15 seconds
+            if self._tamper_stop.is_set():
+                break
+            if not self._enabled or not self._active_domains:
+                continue
+            try:
+                content = self._read_hosts()
+                if MARKER_START not in content:
+                    logger.warning("WebJail tamper detected — re-applying rules")
+                    with self._lock:
+                        clean = self._strip_managed_section(content)
+                        managed = self._build_managed_section(self._active_domains)
+                        if not clean.endswith("\n"):
+                            clean += "\n"
+                        self._write_hosts(clean + managed)
+                        self._flush_dns()
+            except Exception as e:
+                logger.warning(f"Tamper watch error: {e}")
 
     def _cleanup_stale(self) -> None:
         """Remove any stale managed entries (crash recovery)."""

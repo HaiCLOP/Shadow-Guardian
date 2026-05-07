@@ -34,6 +34,30 @@ except Exception:
     pass
 
 
+# ─── Admin Elevation ────────────────────────────────────────────────
+def _ensure_admin():
+    """
+    Ensure the process runs with admin privileges.
+    
+    First launch: shows ONE UAC prompt, then registers a Scheduled Task
+    for future silent auto-starts (no more UAC prompts ever).
+    """
+    from utils.elevation import is_admin, self_elevate, register_autostart, is_autostart_registered
+
+    if is_admin():
+        # Already elevated — make sure auto-start task is registered
+        if not is_autostart_registered():
+            register_autostart()
+        return True
+
+    # Not admin — request elevation (one-time UAC prompt)
+    if self_elevate():
+        sys.exit(0)  # Elevated instance will take over
+    else:
+        # User declined UAC — run without admin (WebJail won't work)
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="ShadowGuardian",
@@ -67,6 +91,11 @@ def main():
         mode = "api"
     else:
         mode = args.mode
+
+    # Elevate to admin for top-level modes (tray/watchdog).
+    # Agent and API are child processes — they inherit admin from the parent.
+    if mode in ("tray", "watchdog"):
+        _ensure_admin()
 
     if mode == "agent":
         from agent.core import ShadowGuardianAgent

@@ -8,7 +8,7 @@
 
 #define MyAppName "Shadow Guardian"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Shadow Guardian"
+#define MyAppPublisher "HaiCLOP Labs"
 #define MyAppURL "https://github.com/shadowguardian"
 #define MyAppExeName "ShadowGuardian.exe"
 
@@ -57,14 +57,15 @@ Name: "{group}\Uninstall {#MyAppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Comment: "Launch Shadow Guardian"
 
 [Registry]
-; Startup entry (optional task)
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "ShadowGuardian"; ValueData: """{app}\{#MyAppExeName}"""; Flags: uninsdeletevalue; Tasks: startupentry
+; (Auto-start is handled via Scheduled Task, not registry — see [Run] section)
 
 [Run]
-; Launch after install
+; Launch after install (this will run elevated and trigger register_autostart() to create the Scheduled Task properly via XML)
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch Shadow Guardian"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
+; Remove the scheduled task
+Filename: "schtasks"; Parameters: "/Delete /TN ""ShadowGuardian"" /F"; Flags: runhidden; RunOnceId: "RemoveTask"
 ; Clean shutdown before uninstall
 Filename: "taskkill"; Parameters: "/F /IM ShadowGuardian.exe"; Flags: runhidden; RunOnceId: "KillSG"
 

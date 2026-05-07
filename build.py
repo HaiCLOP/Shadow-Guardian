@@ -53,6 +53,7 @@ HIDDEN_IMPORTS = [
     "utils.single_instance",
     "utils.secrets_store",
     "utils.paths",
+    "utils.elevation",
     "flask",
     "flask.json",
     "waitress",
