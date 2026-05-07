@@ -23,6 +23,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=dist
 OutputBaseFilename=ShadowGuardianSetup
+SetupIconFile=assets\icon.ico
 WizardStyle=modern
 WizardSizePercent=120
 Compression=lzma2/ultra64

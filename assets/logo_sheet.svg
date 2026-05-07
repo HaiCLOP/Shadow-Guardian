@@ -1,0 +1,129 @@
+<svg width="800" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Shadow Guardian — Full Logo Sheet</title>
+  <desc>Complete logo system including primary mark, icon variants, stacked, and monochrome versions</desc>
+
+  <!-- Background -->
+  <rect width="800" height="900" fill="#0a0a0a"/>
+
+  <!-- SECTION LABELS -->
+  <text x="40" y="36" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="2">PRIMARY MARK</text>
+
+  <!-- ── PRIMARY MARK — DARK ── -->
+  <rect x="40" y="50" width="340" height="100" rx="10" fill="#111"/>
+  <!-- Shield -->
+  <path d="M68 66 L100 58 L132 66 L132 98 Q132 116 100 124 Q68 116 68 98 Z" fill="#1D9E75"/>
+  <!-- S cutout -->
+  <path d="M82 80 Q82 74 88 74 L112 74 Q118 74 118 80 Q118 87 100 89 Q82 91 82 96 Q82 100 88 100 L112 100 Q118 100 118 96" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+  <!-- Wordmark -->
+  <text x="148" y="88" font-family="'Courier New',monospace" font-size="22" font-weight="700" fill="#ffffff" letter-spacing="-0.5">SHADOW</text>
+  <text x="148" y="116" font-family="'Courier New',monospace" font-size="22" font-weight="700" fill="#1D9E75" letter-spacing="-0.5">GUARDIAN</text>
+
+  <!-- ── PRIMARY MARK — LIGHT ── -->
+  <rect x="420" y="50" width="340" height="100" rx="10" fill="#f0f0f0"/>
+  <path d="M448 66 L480 58 L512 66 L512 98 Q512 116 480 124 Q448 116 448 98 Z" fill="#1D9E75"/>
+  <path d="M462 80 Q462 74 468 74 L492 74 Q498 74 498 80 Q498 87 480 89 Q462 91 462 96 Q462 100 468 100 L492 100 Q498 100 498 96" fill="none" stroke="#f0f0f0" stroke-width="4" stroke-linecap="round"/>
+  <text x="528" y="88" font-family="'Courier New',monospace" font-size="22" font-weight="700" fill="#0a0a0a" letter-spacing="-0.5">SHADOW</text>
+  <text x="528" y="116" font-family="'Courier New',monospace" font-size="22" font-weight="700" fill="#1D9E75" letter-spacing="-0.5">GUARDIAN</text>
+
+  <!-- labels -->
+  <text x="40" y="172" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">ON DARK</text>
+  <text x="420" y="172" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">ON LIGHT</text>
+
+  <!-- DIVIDER -->
+  <line x1="40" y1="192" x2="760" y2="192" stroke="#222" stroke-width="0.5"/>
+
+  <!-- SECTION: ICON VARIANTS -->
+  <text x="40" y="218" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="2">ICON VARIANTS</text>
+
+  <!-- 64px icon -->
+  <rect x="40" y="232" width="120" height="120" rx="10" fill="#111"/>
+  <path d="M68 252 L100 244 L132 252 L132 284 Q132 304 100 312 Q68 304 68 284 Z" fill="#1D9E75"/>
+  <path d="M80 266 Q80 260 86 260 L114 260 Q120 260 120 266 Q120 274 100 276 Q80 278 80 284 Q80 290 86 290 L114 290 Q120 290 120 286" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+  <text x="100" y="366" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">64PX</text>
+
+  <!-- 32px icon -->
+  <rect x="200" y="252" width="80" height="80" rx="10" fill="#111"/>
+  <path d="M218 264 L240 258 L262 264 L262 284 Q262 296 240 302 Q218 296 218 284 Z" fill="#1D9E75"/>
+  <path d="M226 272 Q226 268 230 268 L250 268 Q254 268 254 272 Q254 277 240 279 Q226 280 226 284 Q226 288 230 288 L250 288 Q254 288 254 285" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+  <text x="240" y="366" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">32PX</text>
+
+  <!-- 16px icon -->
+  <rect x="330" y="272" width="48" height="48" rx="8" fill="#111"/>
+  <path d="M342 280 L354 276 L366 280 L366 294 Q366 302 354 306 Q342 302 342 294 Z" fill="#1D9E75"/>
+  <path d="M347 286 Q347 283 350 283 L358 283 Q361 283 361 286 Q361 290 354 291 Q347 292 347 295 Q347 298 350 298 L358 298 Q361 298 361 296" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+  <text x="354" y="366" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">16PX</text>
+
+  <!-- App icon (rounded square) -->
+  <rect x="430" y="232" width="120" height="120" rx="24" fill="#111"/>
+  <path d="M458 252 L490 244 L522 252 L522 284 Q522 304 490 312 Q458 304 458 284 Z" fill="#1D9E75"/>
+  <path d="M470 266 Q470 260 476 260 L504 260 Q510 260 510 266 Q510 274 490 276 Q470 278 470 284 Q470 290 476 290 L504 290 Q510 290 510 286" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+  <text x="490" y="366" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">APP ICON</text>
+
+  <!-- Favicon -->
+  <rect x="600" y="272" width="48" height="48" rx="8" fill="#1D9E75"/>
+  <path d="M611 280 L624 276 L637 280 L637 294 Q637 302 624 306 Q611 302 611 294 Z" fill="#0a0a0a" fill-opacity="0.25"/>
+  <path d="M616 286 Q616 283 619 283 L629 283 Q632 283 632 286 Q632 290 624 291 Q616 292 616 295 Q616 298 619 298 L629 298 Q632 298 632 296" fill="none" stroke="#0a0a0a" stroke-width="2.2" stroke-linecap="round"/>
+  <text x="624" y="366" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">FAVICON</text>
+
+  <!-- DIVIDER -->
+  <line x1="40" y1="390" x2="760" y2="390" stroke="#222" stroke-width="0.5"/>
+
+  <!-- SECTION: STACKED -->
+  <text x="40" y="416" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="2">STACKED</text>
+
+  <rect x="40" y="430" width="200" height="200" rx="10" fill="#111"/>
+  <!-- Shield centered -->
+  <path d="M100 452 L140 442 L180 452 L180 492 Q180 514 140 522 Q100 514 100 492 Z" fill="#1D9E75"/>
+  <path d="M115 468 Q115 462 122 462 L158 462 Q165 462 165 468 Q165 476 140 478 Q115 480 115 486 Q115 492 122 492 L158 492 Q165 492 165 488" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+  <text x="140" y="548" text-anchor="middle" font-family="'Courier New',monospace" font-size="16" font-weight="700" fill="#ffffff" letter-spacing="3">SHADOW</text>
+  <text x="140" y="570" text-anchor="middle" font-family="'Courier New',monospace" font-size="16" font-weight="700" fill="#1D9E75" letter-spacing="1.5">GUARDIAN</text>
+  <text x="140" y="616" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">STACKED DARK</text>
+
+  <rect x="280" y="430" width="200" height="200" rx="10" fill="#f0f0f0"/>
+  <path d="M340 452 L380 442 L420 452 L420 492 Q420 514 380 522 Q340 514 340 492 Z" fill="#1D9E75"/>
+  <path d="M355 468 Q355 462 362 462 L398 462 Q405 462 405 468 Q405 476 380 478 Q355 480 355 486 Q355 492 362 492 L398 492 Q405 492 405 488" fill="none" stroke="#f0f0f0" stroke-width="5" stroke-linecap="round"/>
+  <text x="380" y="548" text-anchor="middle" font-family="'Courier New',monospace" font-size="16" font-weight="700" fill="#0a0a0a" letter-spacing="3">SHADOW</text>
+  <text x="380" y="570" text-anchor="middle" font-family="'Courier New',monospace" font-size="16" font-weight="700" fill="#1D9E75" letter-spacing="1.5">GUARDIAN</text>
+  <text x="380" y="616" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#888" letter-spacing="1">STACKED LIGHT</text>
+
+  <!-- DIVIDER -->
+  <line x1="40" y1="638" x2="760" y2="638" stroke="#222" stroke-width="0.5"/>
+
+  <!-- SECTION: MONOCHROME -->
+  <text x="40" y="664" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="2">MONOCHROME</text>
+
+  <!-- Mono white -->
+  <rect x="40" y="678" width="340" height="90" rx="10" fill="#111"/>
+  <path d="M66 694 L96 686 L126 694 L126 720 Q126 736 96 742 Q66 736 66 720 Z" fill="#ffffff"/>
+  <path d="M78 706 Q78 700 84 700 L108 700 Q114 700 114 706 Q114 712 96 714 Q78 716 78 720 Q78 724 84 724 L108 724 Q114 724 114 721" fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="140" y="708" font-family="'Courier New',monospace" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">SHADOW</text>
+  <text x="140" y="732" font-family="'Courier New',monospace" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">GUARDIAN</text>
+  <text x="40" y="784" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">MONO WHITE</text>
+
+  <!-- Mono green -->
+  <rect x="420" y="678" width="340" height="90" rx="10" fill="#111"/>
+  <path d="M446 694 L476 686 L506 694 L506 720 Q506 736 476 742 Q446 736 446 720 Z" fill="#1D9E75"/>
+  <path d="M458 706 Q458 700 464 700 L488 700 Q494 700 494 706 Q494 712 476 714 Q458 716 458 720 Q458 724 464 724 L488 724 Q494 724 494 721" fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="520" y="708" font-family="'Courier New',monospace" font-size="18" font-weight="700" fill="#1D9E75" letter-spacing="-0.3">SHADOW</text>
+  <text x="520" y="732" font-family="'Courier New',monospace" font-size="18" font-weight="700" fill="#1D9E75" letter-spacing="-0.3">GUARDIAN</text>
+  <text x="420" y="784" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="1">MONO GREEN</text>
+
+  <!-- DIVIDER -->
+  <line x1="40" y1="808" x2="760" y2="808" stroke="#222" stroke-width="0.5"/>
+
+  <!-- COLOR SWATCHES -->
+  <text x="40" y="834" font-family="'Courier New',monospace" font-size="10" fill="#444" letter-spacing="2">BRAND COLORS</text>
+  <rect x="40" y="848" width="60" height="28" rx="6" fill="#1D9E75"/>
+  <text x="40" y="890" font-family="'Courier New',monospace" font-size="9" fill="#444">#1D9E75</text>
+  <rect x="120" y="848" width="60" height="28" rx="6" fill="#0F6E56"/>
+  <text x="120" y="890" font-family="'Courier New',monospace" font-size="9" fill="#444">#0F6E56</text>
+  <rect x="200" y="848" width="60" height="28" rx="6" fill="#9FE1CB"/>
+  <text x="200" y="890" font-family="'Courier New',monospace" font-size="9" fill="#444">#9FE1CB</text>
+  <rect x="280" y="848" width="60" height="28" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="0.5"/>
+  <text x="280" y="890" font-family="'Courier New',monospace" font-size="9" fill="#444">#0A0A0A</text>
+  <rect x="360" y="848" width="60" height="28" rx="6" fill="#ffffff"/>
+  <text x="360" y="890" font-family="'Courier New',monospace" font-size="9" fill="#444">#FFFFFF</text>
+
+  <!-- Footer -->
+  <text x="760" y="890" text-anchor="end" font-family="'Courier New',monospace" font-size="9" fill="#333">SHADOW GUARDIAN — LOGO SHEET v1.0 — INTERNAL USE ONLY</text>
+</svg>

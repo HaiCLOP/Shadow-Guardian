@@ -507,15 +507,16 @@
             }
 
             function renderClipboardLog(entries) {
-                dom.clipboardCount.textContent = entries.length;
-                if (entries.length === 0) {
-                    dom.clipboardTbody.innerHTML = '<tr class="placeholder"><td colspan="4">Buffer empty</td></tr>';
+                // Ensure we only show maximum of 3 items
+                const slicedEntries = entries.slice(0, 3);
+                dom.clipboardCount.textContent = slicedEntries.length;
+                if (slicedEntries.length === 0) {
+                    dom.clipboardTbody.innerHTML = '<tr class="placeholder"><td colspan="3">Buffer empty</td></tr>';
                     return;
                 }
-                dom.clipboardTbody.innerHTML = entries.map(e => `
+                dom.clipboardTbody.innerHTML = slicedEntries.map(e => `
                     <tr>
                         <td><span style="color:var(--text-secondary);font-weight:500">${escHtml(e.content_type || '—')}</span></td>
-                        <td title="${escHtml(e.content_preview || '')}">${truncate(e.content_preview || '—', 45)}</td>
                         <td><span style="color:var(--text-secondary);">${escHtml(e.source_app || '—')}</span></td>
                         <td style="font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);">${formatTimestamp(e.timestamp)}</td>
                     </tr>

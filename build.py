@@ -96,6 +96,7 @@ def build_exe():
         "--onedir",                  # One directory (faster startup than onefile)
         "--windowed",                # No console window (tray app)
         "--noconfirm",
+        f"--icon={PROJECT_ROOT}/assets/icon.ico",
         f"--distpath={DIST_DIR}",
         f"--workpath={BUILD_DIR}",
         "--clean",
@@ -178,6 +179,7 @@ def build_installer():
     inno_paths = [
         r"C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
         r"C:\Program Files\Inno Setup 6\ISCC.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"),
     ]
 
     iscc = None

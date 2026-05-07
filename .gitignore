@@ -19,3 +19,6 @@ venv/
 
 temp_cleanup/
 *.spec
+
+*.zip
+sg_port_*.txt

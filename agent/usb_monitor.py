@@ -84,36 +84,40 @@ class USBMonitor:
                 time.sleep(1.0)
 
     def _get_usb_devices(self) -> dict[str, dict]:
-        """Get current USB devices via PowerShell WMI query."""
+        """Get current USB devices via pnputil."""
         devices = {}
         try:
             result = subprocess.run(
-                [
-                    "powershell", "-NoProfile", "-NonInteractive",
-                    "-Command",
-                    "Get-PnpDevice -Class USB,DiskDrive,WPD -Status OK -ErrorAction SilentlyContinue | "
-                    "Select-Object InstanceId,FriendlyName,Class | "
-                    "ConvertTo-Json -Compress"
-                ],
+                ["pnputil", "/enum-devices", "/connected"],
                 capture_output=True,
                 text=True,
                 timeout=15,
                 creationflags=0x08000000,  # CREATE_NO_WINDOW
             )
 
-            if result.returncode == 0 and result.stdout.strip():
-                import json
-                data = json.loads(result.stdout)
-                if isinstance(data, dict):
-                    data = [data]
-                for item in data:
-                    dev_id = item.get("InstanceId", "")
+            if result.returncode == 0:
+                current_dev = {}
+                for line in result.stdout.splitlines():
+                    line = line.strip()
+                    if not line:
+                        if current_dev and current_dev.get("device_class") in ("USB", "DiskDrive", "WPD"):
+                            dev_id = current_dev.get("device_id")
+                            if dev_id:
+                                devices[dev_id] = current_dev
+                        current_dev = {}
+                        continue
+                    
+                    if line.startswith("Instance ID:"):
+                        current_dev["device_id"] = line.split(":", 1)[1].strip()
+                    elif line.startswith("Device Description:"):
+                        current_dev["device_name"] = line.split(":", 1)[1].strip()
+                    elif line.startswith("Class Name:"):
+                        current_dev["device_class"] = line.split(":", 1)[1].strip()
+                
+                if current_dev and current_dev.get("device_class") in ("USB", "DiskDrive", "WPD"):
+                    dev_id = current_dev.get("device_id")
                     if dev_id:
-                        devices[dev_id] = {
-                            "device_id": dev_id,
-                            "device_name": item.get("FriendlyName", "Unknown Device"),
-                            "device_class": item.get("Class", ""),
-                        }
+                        devices[dev_id] = current_dev
         except subprocess.TimeoutExpired:
             logger.warning("USB device query timed out")
         except Exception as e:
