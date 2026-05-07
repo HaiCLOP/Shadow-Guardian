@@ -1,0 +1,5 @@
+/target/
+*.pyd
+*.pyd.manifest
+*.pdb
+__pycache__/
